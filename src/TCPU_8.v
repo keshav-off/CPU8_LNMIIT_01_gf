@@ -11,7 +11,7 @@
                  submodules. All other internal wires start with is_ and
                  internal registers with ir_ (RTL coding guideline).
 */
-module toy_cpu (
+module TCPU_8 (
   input wire clk,
   input wire rst_n,
   input wire [7:0] prog_data,
