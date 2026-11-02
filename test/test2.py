@@ -83,9 +83,22 @@ async def test_add_wrap(dut):
     # Wait for one clock cycle to see the output values
     await ClockCycles(dut.clk, 1)
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
+    #program loaded 
+    dut._log.info("Instruction loaded")
+
+    #assert run 
+    dut.uio_in[0].value = 1
+    await ClockCycles(dut.clk, 8)
+    dut.uio_in[0].value = 0
+
     assert dut.uo_out.value == 23
+ 
+    #reset 
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 1)
+    dut.rst_n.value = 0
+
+    assert dut.uo_out.value == 0 
 
     # Keep testing the module by changing the input values, waiting for
     # one or more clock cycles, and asserting the expected output values.
