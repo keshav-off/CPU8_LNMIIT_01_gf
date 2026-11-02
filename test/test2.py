@@ -1,45 +1,20 @@
+# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
+# SPDX-License-Identifier: Apache-2.0
+
 import cocotb
 from cocotb.clock import Clock
-from cocotb.handle import HierarchyObject
-from cocotb.triggers import ClockCycles, FallingEdge
-
-PROG = [0x1F, 0x3F, 0x60, 0xE0, 0xE0, 0xE0, 0xE0, 0xE0]
-
-
-def find_reg(scope, name):
-    for child in scope:
-        if child._name == name:
-            return child
-        if isinstance(child, HierarchyObject):
-            r = find_reg(child, name)
-            if r is not None:
-                return r
-    return None
-
-
-async def monitor(dut):
-    pc, acc = find_reg(dut, "pc"), find_reg(dut, "acc")
-    ir, halted = find_reg(dut, "ir"), find_reg(dut, "halted")
-    while True:
-        await FallingEdge(dut.clk)
-        dut._log.info(f"pc={pc.value} ir={ir.value} acc={acc.value} "
-                      f"halted={halted.value} uo_out={dut.uo_out.value} "
-                      f"uio_in={dut.uio_in.value}")
-
-
-async def load_word(dut, word):
-    dut.ui_in.value = word
-    dut.uio_in.value = 0b10          # prog_load = 1, run = 0
-    await ClockCycles(dut.clk, 3)
-    dut.uio_in.value = 0b00
-    await ClockCycles(dut.clk, 3)
-
+from cocotb.triggers import ClockCycles
 
 @cocotb.test()
-async def test_debug(dut):
-    cocotb.start_soon(Clock(dut.clk, 1, unit="us").start())
-    cocotb.start_soon(monitor(dut))
+async def test_add_wrap(dut):
+    dut._log.info("Start")
 
+    # Set the clock period to 10 us (100 KHz)
+    clock = Clock(dut.clk, 1, unit="us")
+    cocotb.start_soon(clock.start())
+
+    # Reset
+    dut._log.info("Reset")
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
@@ -48,10 +23,81 @@ async def test_debug(dut):
     dut.rst_n.value = 1
     await ClockCycles(dut.clk, 3)
 
-    for w in PROG:
-        await load_word(dut, w)
+    dut._log.info("load in program memory")
+    #instr1
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0x1F
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+    await ClockCycles(dut.clk, 3)
 
-    dut.uio_in.value = 0b01          # run
-    await ClockCycles(dut.clk, 8)
+    #instr2
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0x3F
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+    await ClockCycles(dut.clk, 3)
+
+    #instr3
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0x60
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+    await ClockCycles(dut.clk, 3)
+
+    #instr4
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0xE0
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+    await ClockCycles(dut.clk, 3)
+
+    #instr5
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0xE0
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+    await ClockCycles(dut.clk, 3)
+
+    #instr6 
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0xE0
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+    await ClockCycles(dut.clk, 3)
+
+    #instr7
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0xE0
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+    await ClockCycles(dut.clk, 3)
+
+    #instr8
+    dut.uio_in[1].value = 0
+    dut.ui_in.value = 0xE0
+    await ClockCycles(dut.clk, 3)
+    dut.uio_in[1].value = 1
+
+    # Wait for one clock cycle to see the output values
+    await ClockCycles(dut.clk, 3)
+
+    #program loaded 
+    dut._log.info("Instruction loaded")
+
+    #assert run 
+    dut.uio_in[0].value = 1
+    await ClockCycles(dut.clk, 6)
 
     assert int(dut.uo_out.value) == 62
+
+    #reset 
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 4)
+    dut.rst_n.value = 1
+    await ClockCycles(dut.clk, 3)
+
+    assert int(dut.uo_out.value) == 0x00
+
+    # Keep testing the module by changing the input values, waiting for
+    # one or more clock cycles, and asserting the expected output values.
