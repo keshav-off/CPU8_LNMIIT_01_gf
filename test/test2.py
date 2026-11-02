@@ -7,7 +7,7 @@ from cocotb.triggers import ClockCycles
 
 
 @cocotb.test()
-async def test_add_wrap(dut):
+async def test_add_max_imm(dut):
     dut._log.info("Start")
 
     # Set the clock period to 10 us (100 KHz)
@@ -20,86 +20,86 @@ async def test_add_wrap(dut):
     dut.ui_in.value = 0
     dut.uio_in.value = 0
     dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 4)
+    await ClockCycles(dut.clk, 2)
     dut.rst_n.value = 1
-    await ClockCycles(dut.clk, 3)
+    
 
     dut._log.info("load in program memory")
     #instr1
     dut.uio_in[1].value = 0
     dut.ui_in.value = 31
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #instr2
     dut.uio_in[1].value = 0
     dut.ui_in.value = 63
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #instr3
     dut.uio_in[1].value = 0
-    dut.ui_in.value = 63
-    await ClockCycles(dut.clk, 3)
+    dut.ui_in.value = 48
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #instr4
     dut.uio_in[1].value = 0
-    dut.ui_in.value = 63
-    await ClockCycles(dut.clk, 3)
+    dut.ui_in.value = 112
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #instr5
     dut.uio_in[1].value = 0
-    dut.ui_in.value = 63
-    await ClockCycles(dut.clk, 3)
+    dut.ui_in.value = 112
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #instr6 
     dut.uio_in[1].value = 0
-    dut.ui_in.value = 129
-    await ClockCycles(dut.clk, 3)
+    dut.ui_in.value = 112
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #instr7
     dut.uio_in[1].value = 0
-    dut.ui_in.value = 48
-    await ClockCycles(dut.clk, 3)
+    dut.ui_in.value = 112
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #instr8
     dut.uio_in[1].value = 0
     dut.ui_in.value = 112
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
     dut.uio_in[1].value = 1
 
     
     # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 3)
+    await ClockCycles(dut.clk, 1)
 
     #program loaded 
     dut._log.info("Instruction loaded")
 
     #assert run 
     dut.uio_in[0].value = 1
-    await ClockCycles(dut.clk, 11)
-    dut.uio_in[0].value = 0
     await ClockCycles(dut.clk, 3)
+    dut.uio_in[0].value = 0
+    await ClockCycles(dut.clk, 1)
 
-    assert dut.uo_out.value == 23
+    assert dut.uo_out.value == 62
  
     #reset 
     dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 4)
+    await ClockCycles(dut.clk, 1)
     dut.rst_n.value = 1
-    await ClockCycles(dut.clk, 4)
+    await ClockCycles(dut.clk, 1)
     
     assert dut.uo_out.value == 0 
 
