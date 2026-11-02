@@ -1,7 +1,7 @@
 # Tiny Tapeout project information
 project:
   title:        "TCPU_8"      # Project title
-  author:       "Keshav"      # Your name
+  author:       "Amishi, Keshav"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "8bit, accumulator based, single cycle CPU"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
