@@ -96,7 +96,7 @@ async def test_add_wrap(dut):
     #reset 
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 1)
-    dut.rst_n.value = 0
+    dut.rst_n.value = 1
 
     assert dut.uo_out.value == 0 
 
