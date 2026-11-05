@@ -7,6 +7,7 @@ FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
 PROJECT_SOURCES = project.v TCPU_8.v alu.v decoding_unit.v execution_unit.v program_counter.v program_loader.v program_memory.v 
+PDK_ROOT ?= $(HOME)/ttsetup/pdk
 
 ifneq ($(GATES),yes)
 
