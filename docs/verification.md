@@ -74,7 +74,7 @@ The simulator writes `tb.fst` in `test/` by default. Open it with GTKWave (`gtkw
 ## Hardening snapshot
 
 The design is hardened by the Tiny Tapeout GF180 GDS workflow in GitHub Actions, not locally.
-For commit <1c4d3c4 hash>, the `gds` workflow passes: <https://github.com/keshav-off/CPU8_LNMIIT_01_gf/actions/runs/42008089031>.
+For commit [1c4d3c4](https://github.com/keshav-off/CPU8_LNMIIT_01_gf/commit/1c4d3c4) , the `gds` workflow passes: <https://github.com/keshav-off/CPU8_LNMIIT_01_gf/actions/runs/42008089031>.
 
 The workflow runs the LibreLane flow, the precheck and the gate-level test. The generated GDS,
 netlist and reports are uploaded as artifacts of that run. Check the run page for the
