@@ -14,8 +14,8 @@ ifneq ($(GATES),yes)
 # RTL simulation:
 SIM_BUILD				= sim_build/rtl
 VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
-COCOTB_TEST_MODULES = test_reset_values,test_reset_priority_over_load,test_reset_keeps_program,test_reset_during_load
-export PYTHONPATH=$(PWD)/testcases/reset_feature:$(PYTHONPATH)
+COCOTB_TEST_MODULES = testcases.reset_feature.test_reset_values
+#export PYTHONPATH=$(PWD)/testcases/reset_feature:$(PYTHONPATH)
 
 
 else
