@@ -33,7 +33,7 @@ VERILOG_SOURCES += $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilo
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
 COCOTB_TEST_MODULES = test_reset_values
-export PYTHONPATH=$(PWD)/testcases/reset_feature:$(PYTHONPATH)
+export PYTHONPATH:=$(CURDIR)/testcases/reset_feature:$(PYTHONPATH)
 
 endif
 
