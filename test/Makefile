@@ -7,14 +7,14 @@ FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
 PROJECT_SOURCES = project.v TCPU_8.v alu.v decoding_unit.v execution_unit.v program_counter.v program_loader.v program_memory.v 
-PDK_ROOT ?= $(HOME)/ttsetup/pdk
+
 
 ifneq ($(GATES),yes)
 
 # RTL simulation:
 SIM_BUILD				= sim_build/rtl
 VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
-COCOTB_TEST_MODULES = test_reset_values, test_reset_priority_over_load, test_reset_keeps_program, test_reset_during_load
+COCOTB_TEST_MODULES = test_reset_values,test_reset_priority_over_load,test_reset_keeps_program,test_reset_during_load
 export PYTHONPATH=$PWD/testcases/reset_feature:$PYTHONPATH
 
 
