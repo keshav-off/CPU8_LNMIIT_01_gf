@@ -1,42 +1,77 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# Tiny Tapeout Verilog Project Template
+# TCPU-8
 
-- [Read the documentation for project](docs/info.md)
+TCPU-8 is a small, single-cycle 8-bit accumulator CPU designed for a 1x1 Tiny Tapeout tile using the GF180MCU process. It has a 1-byte instruction format, an 8-word program memory built from flip-flops, and a pulse-based program-loading interface. One instruction finishes on every clock edge while `run` is high.
 
-## What is Tiny Tapeout?
+The CPU implements `LOAD`, `ADD`, `SUB`, `STORE`, `JMP`, `JZ`, `XOR` and `HALT`. The 8-bit accumulator is copied to the output pins by `STORE`. Opcode `110` is `XOR`, which replaces the `OUT` instruction of the original specification, because `OUT` did the same thing as `STORE`.
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+See the [project datasheet](docs/info.md) for the architecture, instruction set, pin mapping and a programming example.
 
-To learn more and get started, visit https://tinytapeout.com.
+## Project status
 
-## Set up your Verilog project
+The repository includes the RTL, the Tiny Tapeout wrapper, a cocotb testbench organised by feature, and the Tiny Tapeout workflows for testing, GF180 hardening, precheck, gate-level testing and the documentation page. Tests are being added feature by feature following the test plan in `test/TCPU8_Test_Plan.xlsx`. See [verification and implementation status](docs/verification.md) for what is tested so far and how to run it.
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+## Pin mapping
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+| Pins | Name | Direction | Meaning |
+| --- | --- | --- | --- |
+| `ui[7:0]` | `prog_data[7:0]` | input | program word to write |
+| `uio[0]` | `run` | input | 1 = execute, 0 = pause or load |
+| `uio[1]` | `prog_load` | input | pulse to write one word |
+| `uo[7:0]` | `out_data[7:0]` | output | output register |
 
-## Enable GitHub actions to build the results page
+The bidirectional pins are used as inputs only (`uio_oe = 0`). `rst_n` is the standard Tiny Tapeout reset, active low.
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+## Run the tests
 
-## Resources
+Install Icarus Verilog and the Python packages in `test/requirements.txt`, then run:
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+```
+cd test
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+make clean
+make
+python -m cocotb_tools.check_results results.xml
+```
 
-## What next?
+The tests are in `test/testcases/`, one folder per feature. The `COCOTB_TEST_MODULES` line in `test/Makefile` selects which ones run, and you can run a single test from the command line:
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+```
+make COCOTB_TEST_MODULES=testcases.reset_feature.test_reset_values
+```
+
+`make` writes the waveform file `tb.fst`, which you can open with GTKWave (`gtkwave tb.fst`) or Surfer (`surfer tb.fst`). Saved waveforms are kept in `test/waveforms/<feature>/`.
+
+The `gds` workflow hardens the design and repeats the test on the gate-level netlist, so a test used there may only check the chip pins. Details are in the [test README](test/README.md) and [docs/verification.md](docs/verification.md).
+
+## Repository map
+
+* `src/` - CPU RTL and the Tiny Tapeout wrapper:
+  * `project.v` - wrapper, top module `tt_um_CPU8_LNMIIT`, maps the CPU to the Tiny Tapeout pins
+  * `TCPU_8.v` - CPU top level (accumulator, output register, wiring)
+  * `program_loader.v` - turns `prog_load` pulses into memory writes
+  * `program_memory.v` - 8 x 8 flip-flop program memory
+  * `decoding_unit.v` - splits the instruction byte into opcode, immediate and target
+  * `alu.v` - LOAD, ADD, SUB and XOR
+  * `execution_unit.v` - run enable and the halted flag
+  * `program_counter.v` - 3-bit PC with JMP, JZ and HALT handling
+  * `config.json` - Tiny Tapeout hardening settings
+* `test/` - cocotb testbench:
+  * `testcases/` - one folder per feature, one file per test
+  * `waveforms/` - saved waveforms, one folder per feature
+  * `tb.v` and `Makefile` - simulation top and flow (RTL and gate level)
+  * `TCPU8_Test_Plan.xlsx` - the test plan
+  * `README.md` - testbench instructions
+* `docs/info.md` - datasheet content used by Tiny Tapeout.
+* `docs/verification.md` - how to run the tests, what they check, CI workflows and hardening status.
+* `info.yaml` - project settings: top module, source files, pin names and clock.
+* `.github/workflows/` - Tiny Tapeout workflows for `gds`, `docs`, `test` and `fpga`.
+
+## Tiny Tapeout resources
+
+* [Tiny Tapeout](https://tinytapeout.com/)
+* [Local hardening guide](https://www.tinytapeout.com/guides/local-hardening/)
+* [Digital design lessons](https://tinytapeout.com/digital_design/)
