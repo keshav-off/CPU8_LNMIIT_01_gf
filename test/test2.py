@@ -25,59 +25,59 @@ async def test_add_wrap(dut):
 
     dut._log.info("load in program memory")
     #instr1
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0x1F
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
     await ClockCycles(dut.clk, 1)
 
     #instr2
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0x3F
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
     await ClockCycles(dut.clk, 1)
 
     #instr3
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0x60
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
     await ClockCycles(dut.clk, 1)
 
     #instr4
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0xE0
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
     await ClockCycles(dut.clk, 1)
 
     #instr5
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0xE0
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
     await ClockCycles(dut.clk, 1)
 
     #instr6 
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0xE0
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
     await ClockCycles(dut.clk, 1)
 
     #instr7
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0xE0
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
     await ClockCycles(dut.clk, 1)
 
     #instr8
-    dut.uio_in[1].value = 0
+    dut.uio_in.value = 0b00
     dut.ui_in.value = 0xE0
     await ClockCycles(dut.clk, 1)
-    dut.uio_in[1].value = 1
+    dut.uio_in.value = 0b10
 
     # Wait for one clock cycle to see the output values
     await ClockCycles(dut.clk, 1)
@@ -86,7 +86,7 @@ async def test_add_wrap(dut):
     dut._log.info("Instruction loaded")
 
     #assert run 
-    dut.uio_in[0].value = 1
+    dut.uio_in.value = 0b01
     await ClockCycles(dut.clk, 4)
 
     assert int(dut.uo_out.value) == 62

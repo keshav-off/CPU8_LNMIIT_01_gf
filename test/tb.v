@@ -8,7 +8,7 @@ module tb ();
 
   // Dump the signals to a FST file. You can view it with gtkwave or surfer.
   initial begin
-     $dumpfile("tb.fst");
+     $dumpfile("waveforms/program_loading_feature/test_load_across_reset_release.fst");
     $dumpvars(0, tb);
     #1;
   end
