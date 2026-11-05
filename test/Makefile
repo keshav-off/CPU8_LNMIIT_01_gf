@@ -13,6 +13,9 @@ ifneq ($(GATES),yes)
 # RTL simulation:
 SIM_BUILD				= sim_build/rtl
 VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
+COCOTB_TEST_MODULES = test_reset_values, test_reset_priority_over_load, test_reset_keeps_program, test_reset_during_load, 
+export PYTHONPATH=$PWD/testcases/reset_feature:$PYTHONPATH
+
 
 else
 
@@ -28,6 +31,8 @@ VERILOG_SOURCES += $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilo
 
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
+COCOTB_TEST_MODULES = test_reset_values,
+export PYTHONPATH=$PWD/testcases/reset_feature:$PYTHONPATH
 
 endif
 
@@ -39,7 +44,7 @@ VERILOG_SOURCES += $(PWD)/tb.v
 TOPLEVEL = tb
 
 # List test modules to run, separated by commas and without the .py suffix:
-COCOTB_TEST_MODULES = reset_feature_test
+
 
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
