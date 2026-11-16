@@ -14,7 +14,7 @@ ifneq ($(GATES),yes)
 # RTL simulation:
 SIM_BUILD				= sim_build/rtl
 VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
-COCOTB_TEST_MODULES = testcases.reset_feature.test_reset_values
+COCOTB_TEST_MODULES = testcases.tcpu8_test
 #export PYTHONPATH=$(PWD)/testcases/reset_feature:$(PYTHONPATH)
 
 
@@ -32,7 +32,7 @@ VERILOG_SOURCES += $(PDK_ROOT)/gf180mcuD/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilo
 
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
-COCOTB_TEST_MODULES = testcases.reset_feature.test_reset_values
+COCOTB_TEST_MODULES = testcases.test_cpu8_gl
 
 endif
 
