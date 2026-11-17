@@ -1,0 +1,35 @@
+Startpoint: _604_ (rising edge-triggered flip-flop clocked by clk)
+Endpoint: _604_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: min
+
+Fanout      Cap     Slew    Delay     Time   Description
+---------------------------------------------------------------------------------
+                   0.150    0.000    0.000   clock clk (rise edge)
+                            0.000    0.000   clock network delay (ideal)
+                   0.150    0.000    0.000 ^ _604_/CLK (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+     2    0.007    0.335    1.787    1.787 v _604_/Q (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+                                             out_data[0] (net)
+                   0.335    0.000    1.787 v _278_/I (gf180mcu_fd_sc_mcu7t5v0__clkinv_1)
+     1    0.005    0.361    0.303    2.090 ^ _278_/ZN (gf180mcu_fd_sc_mcu7t5v0__clkinv_1)
+                                             _105_ (net)
+                   0.361    0.000    2.090 ^ _501_/A1 (gf180mcu_fd_sc_mcu7t5v0__aoi21_1)
+     1    0.002    0.285    0.250    2.339 v _501_/ZN (gf180mcu_fd_sc_mcu7t5v0__aoi21_1)
+                                             _078_ (net)
+                   0.285    0.000    2.339 v _604_/D (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+                                     2.339   data arrival time
+
+                   0.150    0.000    0.000   clock clk (rise edge)
+                            0.000    0.000   clock network delay (ideal)
+                            0.250    0.250   clock uncertainty
+                            0.000    0.250   clock reconvergence pessimism
+                                     0.250 ^ _604_/CLK (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+                            0.078    0.328   library hold time
+                                     0.328   data required time
+---------------------------------------------------------------------------------
+                                     0.328   data required time
+                                    -2.339   data arrival time
+---------------------------------------------------------------------------------
+                                     2.012   slack (MET)
+
+

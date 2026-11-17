@@ -1,0 +1,38 @@
+Startpoint: rst_n (input port clocked by clk)
+Endpoint: _529_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: max
+
+Fanout      Cap     Slew    Delay     Time   Description
+---------------------------------------------------------------------------------
+                   0.150    0.000    0.000   clock clk (rise edge)
+                            0.000    0.000   clock network delay (ideal)
+                            4.000    4.000 ^ input external delay
+    23    0.104    1.554    0.917    4.917 ^ rst_n (in)
+                                             rst_n (net)
+                   1.554    0.000    4.917 ^ _283_/A2 (gf180mcu_fd_sc_mcu7t5v0__nand3_1)
+     4    0.016    0.560    0.335    5.251 v _283_/ZN (gf180mcu_fd_sc_mcu7t5v0__nand3_1)
+                                             _110_ (net)
+                   0.560    0.000    5.251 v _284_/A3 (gf180mcu_fd_sc_mcu7t5v0__nor3_1)
+     8    0.079    3.097    1.971    7.222 ^ _284_/ZN (gf180mcu_fd_sc_mcu7t5v0__nor3_1)
+                                             _111_ (net)
+                   3.097    0.000    7.222 ^ _285_/S (gf180mcu_fd_sc_mcu7t5v0__mux2_2)
+     1    0.002    0.110    0.261    7.483 v _285_/Z (gf180mcu_fd_sc_mcu7t5v0__mux2_2)
+                                             _003_ (net)
+                   0.110    0.000    7.483 v _529_/D (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+                                     7.483   data arrival time
+
+                   0.150   20.000   20.000   clock clk (rise edge)
+                            0.000   20.000   clock network delay (ideal)
+                           -0.250   19.750   clock uncertainty
+                            0.000   19.750   clock reconvergence pessimism
+                                    19.750 ^ _529_/CLK (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+                           -0.185   19.565   library setup time
+                                    19.565   data required time
+---------------------------------------------------------------------------------
+                                    19.565   data required time
+                                    -7.483   data arrival time
+---------------------------------------------------------------------------------
+                                    12.082   slack (MET)
+
+
