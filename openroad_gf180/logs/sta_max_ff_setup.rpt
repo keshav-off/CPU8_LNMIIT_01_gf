@@ -1,0 +1,61 @@
+Startpoint: rst_n (input port clocked by clk)
+Endpoint: _529_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: max
+
+Fanout      Cap     Slew    Delay     Time   Description
+---------------------------------------------------------------------------------
+                            0.000    0.000   clock clk (rise edge)
+                            0.000    0.000   clock network delay (propagated)
+                            7.000    7.000 v input external delay
+     1    0.004    0.049    0.018    7.018 v rst_n (in)
+                                             rst_n (net)
+                   0.049    0.000    7.018 v input1/I (gf180mcu_fd_sc_mcu7t5v0__dlyb_1)
+     1    0.005    0.160    0.832    7.850 v input1/Z (gf180mcu_fd_sc_mcu7t5v0__dlyb_1)
+                                             net1 (net)
+                   0.160    0.000    7.850 v fanout31/I (gf180mcu_fd_sc_mcu7t5v0__dlyb_1)
+     3    0.020    0.276    0.992    8.842 v fanout31/Z (gf180mcu_fd_sc_mcu7t5v0__dlyb_1)
+                                             net31 (net)
+                   0.276    0.000    8.843 v fanout28/I (gf180mcu_fd_sc_mcu7t5v0__dlyb_1)
+     3    0.022    0.290    1.049    9.892 v fanout28/Z (gf180mcu_fd_sc_mcu7t5v0__dlyb_1)
+                                             net28 (net)
+                   0.290    0.000    9.892 v load_slew29/I (gf180mcu_fd_sc_mcu7t5v0__buf_2)
+     8    0.064    0.272    0.407   10.299 v load_slew29/Z (gf180mcu_fd_sc_mcu7t5v0__buf_2)
+                                             net29 (net)
+                   0.272    0.002   10.301 v _283_/A2 (gf180mcu_fd_sc_mcu7t5v0__nand3_1)
+     4    0.069    1.344    0.913   11.214 ^ _283_/ZN (gf180mcu_fd_sc_mcu7t5v0__nand3_1)
+                                             _110_ (net)
+                   1.344    0.001   11.216 ^ _284_/A3 (gf180mcu_fd_sc_mcu7t5v0__nor3_4)
+     3    0.037    0.488    0.304   11.519 v _284_/ZN (gf180mcu_fd_sc_mcu7t5v0__nor3_4)
+                                             _111_ (net)
+                   0.488    0.000   11.520 v wire20/I (gf180mcu_fd_sc_mcu7t5v0__buf_3)
+     6    0.094    0.280    0.512   12.032 v wire20/Z (gf180mcu_fd_sc_mcu7t5v0__buf_3)
+                                             net20 (net)
+                   0.280    0.001   12.033 v _285_/S (gf180mcu_fd_sc_mcu7t5v0__mux2_2)
+     1    0.006    0.103    0.378   12.411 ^ _285_/Z (gf180mcu_fd_sc_mcu7t5v0__mux2_2)
+                                             _003_ (net)
+                   0.103    0.000   12.411 ^ _529_/D (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+                                    12.411   data arrival time
+
+                           35.000   35.000   clock clk (rise edge)
+                            0.000   35.000   clock source latency
+     1    0.042    0.175    0.088   35.088 ^ clk (in)
+                                             clk (net)
+                   0.175    0.000   35.088 ^ clkbuf_0_clk/I (gf180mcu_fd_sc_mcu7t5v0__clkbuf_16)
+    16    0.223    0.230    0.293   35.380 ^ clkbuf_0_clk/Z (gf180mcu_fd_sc_mcu7t5v0__clkbuf_16)
+                                             clknet_0_clk (net)
+                   0.230    0.002   35.382 ^ clkbuf_4_12_0_clk/I (gf180mcu_fd_sc_mcu7t5v0__clkbuf_8)
+     6    0.033    0.106    0.221   35.602 ^ clkbuf_4_12_0_clk/Z (gf180mcu_fd_sc_mcu7t5v0__clkbuf_8)
+                                             clknet_4_12_0_clk (net)
+                   0.106    0.001   35.603 ^ _529_/CLK (gf180mcu_fd_sc_mcu7t5v0__dffq_1)
+                           -0.250   35.353   clock uncertainty
+                            0.000   35.353   clock reconvergence pessimism
+                           -0.185   35.168   library setup time
+                                    35.168   data required time
+---------------------------------------------------------------------------------
+                                    35.168   data required time
+                                   -12.411   data arrival time
+---------------------------------------------------------------------------------
+                                    22.756   slack (MET)
+
+
